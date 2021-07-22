@@ -1,41 +1,40 @@
-const AWS = require('aws-sdk')
 const { v4: uuidv4 } = require('uuid')
+const AWS = require('aws-sdk')
 
-const dybanoDb = new AWS.DynamoDB.DocumentClient()
-const ARTICLE_TABLE = 'article'
+const ARTICLES_TABLE = 'articles'
+const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
-const create = async article => {
+const create = async (article) => {
   const articleId = uuidv4()
-
   const newArticle = {
     articleId,
-    ...article
-  }
-  const params = { 
-    TabletName: ARTICLE_TABLE,
-    Item: newArticle
+    ...article,
   }
 
-  await dybanoDb.put(params).promise()
+  const params = {
+    TableName: ARTICLES_TABLE,
+    Item: newArticle,
+  }
 
-  return newArticle;
+  await dynamoDb.put(params).promise()
+
+  return newArticle
 }
 
-const get = async articleId => {
-
-  const params = { 
-    TabletName: ARTICLE_TABLE,
+const get = async (articleId) => {
+  const params = {
+    TableName: ARTICLES_TABLE,
     Key: {
-      newArticle
-    }
+      articleId,
+    },
   }
 
-  const response = await dybanoDb.get(params).promise()
+  const result = await dynamoDb.get(params).promise()
 
-  return response.Item;
+  return result.Item
 }
 
 module.exports = {
   create,
-  get
+  get,
 }
