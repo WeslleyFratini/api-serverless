@@ -1,5 +1,6 @@
+
 {
-  "name": "serverless-example",
+  "name": "serverless-api",
   "version": "0.0.1",
   "description": "Serverless REST API using serverless",
   "main": "handlers.js",
